@@ -48,6 +48,8 @@ service:
   internal-key: fintech-internal-service-key-2024
   quickpay:
     url: http://localhost:8081
+  riskcontrol:
+    url: http://localhost:8084
 
 logging:
   level:

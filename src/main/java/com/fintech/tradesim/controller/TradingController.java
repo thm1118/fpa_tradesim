@@ -1,5 +1,6 @@
 package com.fintech.tradesim.controller;
 
+import com.fintech.tradesim.client.RiskControlClient;
 import com.fintech.tradesim.dto.OrderDTO;
 import com.fintech.tradesim.dto.OrderRequest;
 import com.fintech.tradesim.dto.TradeDTO;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TradingController {
     private final TradingService tradingService;
+    private final RiskControlClient riskControlClient;
 
     @PostMapping("/orders")
     public ResponseEntity<OrderDTO> placeOrder(
@@ -60,5 +63,15 @@ public class TradingController {
             @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(tradingService.getTrades(principal.getUser(), pageable));
+    }
+
+    @PostMapping("/risk-check")
+    public ResponseEntity<Map<String, Object>> riskCheck(
+            @CurrentUser UserPrincipal principal,
+            @RequestBody Map<String, Object> request) {
+        String username = principal.getUser().getUsername();
+        BigDecimal amount = new BigDecimal(request.get("amount").toString());
+        Map<String, Object> result = riskControlClient.checkTransaction(username, "TRADE", amount, null);
+        return ResponseEntity.ok(result);
     }
 }

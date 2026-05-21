@@ -20,4 +20,6 @@ public interface WatchlistRepository extends JpaRepository<Watchlist, Long> {
     void deleteByUserAndSecurity(User user, Security security);
 
     long countByUser(User user);
+
+    List<Watchlist> findBySecurity(Security security);
 }

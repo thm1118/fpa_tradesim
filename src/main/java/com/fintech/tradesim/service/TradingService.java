@@ -5,6 +5,8 @@ import com.fintech.tradesim.dto.OrderRequest;
 import com.fintech.tradesim.dto.TradeDTO;
 import com.fintech.tradesim.entity.*;
 import com.fintech.tradesim.exception.TradingException;
+import com.fintech.tradesim.messaging.EventPublisher;
+import com.fintech.tradesim.messaging.event.OrderFilledEvent;
 import com.fintech.tradesim.repository.OrderRepository;
 import com.fintech.tradesim.repository.TradeRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class TradingService {
     private final AccountService accountService;
     private final SecurityService securityService;
     private final PositionService positionService;
+    private final EventPublisher eventPublisher;
 
     private static final BigDecimal COMMISSION_RATE = new BigDecimal("0.0003"); // 0.03%
     private static final BigDecimal MIN_COMMISSION = new BigDecimal("5.00");
@@ -164,6 +167,17 @@ public class TradingService {
 
         // Update account total assets
         accountService.updateTotalAssets(account);
+
+        // Publish order-filled event
+        OrderFilledEvent event = new OrderFilledEvent(
+                order.getId(),
+                account.getId(),
+                security.getSymbol(),
+                order.getSide().name(),
+                quantity,
+                price
+        );
+        eventPublisher.publish("tradesim.order-filled", String.valueOf(order.getId()), event);
     }
 
     public Page<OrderDTO> getOrders(User user, Pageable pageable) {

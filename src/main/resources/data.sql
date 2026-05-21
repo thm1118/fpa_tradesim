@@ -24,3 +24,15 @@ INSERT INTO users (username, email, password, phone, real_name, risk_level, veri
 -- Demo account with 100,000 virtual money
 INSERT INTO accounts (user_id, account_no, cash_balance, frozen_cash, total_assets, total_profit, profit_rate, status, created_at, updated_at) VALUES
 (1, 'TS1000000001DEMO', 100000.00, 0.00, 100000.00, 0.00, 0.0000, 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- 新增演示用户（密码：password123）
+INSERT INTO users (username, email, password, phone, real_name, risk_level, verified, created_at, updated_at) VALUES
+('zhangwei', 'zhangwei@tradesim.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '13900139001', '张伟', 'MODERATE', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('lina', 'lina@tradesim.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '13900139002', '李娜', 'CONSERVATIVE', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('wangqiang', 'wangqiang@tradesim.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '13900139003', '王强', 'AGGRESSIVE', true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- 新增演示账户（user_id 2/3/4 对应张伟/李娜/王强）
+INSERT INTO accounts (user_id, account_no, cash_balance, frozen_cash, total_assets, total_profit, profit_rate, status, created_at, updated_at) VALUES
+(2, 'TS1000000002ZHAW', 100000.00, 0.00, 100000.00, 0.00, 0.0000, 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3, 'TS1000000003LINA', 100000.00, 0.00, 100000.00, 0.00, 0.0000, 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(4, 'TS1000000004WANQ', 100000.00, 0.00, 100000.00, 0.00, 0.0000, 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
